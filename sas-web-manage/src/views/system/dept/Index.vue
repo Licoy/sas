@@ -1,103 +1,102 @@
 <template>
   <a-card :bordered="false">
     <a-row :gutter="8">
-      <a-col :span="5">
-        <s-tree
-          :dataSource="orgTree"
-          :openKeys.sync="openKeys"
-          :search="true"
-          :add="true"
-          @click="handleClick"
-          @add="handleAdd"
-          @titleClick="handleTitleClick"></s-tree>
+      <a-col :span='12'>
+        <a-button class="mr5" type='primary'><a-icon type="reload" /> 刷新数据</a-button>
+        <a-button class="mr5" @click="show.edit=true"><a-icon type="plus" /> 添加部门</a-button>
+        <a-button class="mr5" :disabled='selectedRows.length==0'><a-icon type="delete" /> 删除</a-button>
       </a-col>
-      <a-col :span="19">
-        <s-table
-          ref="table"
-          size="default"
+      <a-col class="tr" :span='12'>
+        <a-input-group compact>
+          <a-select defaultValue="name">
+            <a-select-option value="name">部门名称</a-select-option>
+            <a-select-option value="all">部门全称</a-select-option>
+            <a-select-option value="note">备注</a-select-option>
+          </a-select>
+          <a-input style="width: 300px" placeholder="输入搜索关键字"/>
+        </a-input-group>
+      </a-col>
+    </a-row>
+    <a-divider/>
+    <a-row :gutter="8">
+      <a-col :span="4">
+        <a-tree 
+          :treeData="treeData"
+          showIcon
+          defaultExpandAll
+          :defaultSelectedKeys="['0-0-0']"
+        >
+          <a-icon slot="folder" type="folder" />
+          <template slot="custom" slot-scope="{selected}">
+            <a-icon :type="selected ? 'frown':'frown-o'" />
+          </template>
+        </a-tree>
+      </a-col>
+      <a-col :span="20">
+        <a-table
+          ref="table" bordered
           :columns="columns"
-          :data="loadData"
-          :alert="false"
           :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         >
           <span slot="action" slot-scope="text, record">
             <template v-if="$auth('table.update')">
               <a @click="handleEdit(record)">编辑</a>
-              <a-divider type="vertical" />
+              <a-divider type="vertical" v-if="$auth('table.delete')"/>
             </template>
-            <a-dropdown>
+            <a-dropdown v-if="$auth('table.delete')">
               <a class="ant-dropdown-link">
                 更多 <a-icon type="down" />
               </a>
               <a-menu slot="overlay">
-                <a-menu-item>
-                  <a href="javascript:;">详情</a>
-                </a-menu-item>
-                <a-menu-item v-if="$auth('table.disable')">
-                  <a href="javascript:;">禁用</a>
-                </a-menu-item>
                 <a-menu-item v-if="$auth('table.delete')">
                   <a href="javascript:;">删除</a>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
           </span>
-        </s-table>
+        </a-table>
       </a-col>
     </a-row>
-
-    <org-modal ref="modal" @ok="handleSaveOk" @close="handleSaveClose" />
+    <edit v-if="show.edit" @cancel="(reload)=>{show.edit=false;}"/>
   </a-card>
 </template>
 
 <script>
-import STree from '@/components/Tree/Tree'
-import { STable } from '@/components'
-import OrgModal from './modules/OrgModal'
-import { getOrgTree, getServiceList } from '@/api/manage'
-
+import Edit from './Edit';
+import commonMixins from '@/mixins/common'
+const treeData = [{
+  title: '顶级部门',
+  key: '0-0',
+  slots: {
+    icon: 'folder',
+  },
+  children: [
+    { title: '财务部', key: '0-0-0', slots: { icon: 'folder' }},
+    { title: '商务部', key: '0-0-1', scopedSlots: { icon: 'folder' },children:[
+      { title: '商务一部', key: '2', slots: { icon: 'folder' }},
+    ]} ],
+}]
 export default {
   name: 'TreeList',
+  mixins:[commonMixins],
   components: {
-    STable,
-    STree,
-    OrgModal
+    Edit
   },
   data () {
     return {
-      openKeys: ['key-01'],
-
-      // 查询参数
+      show:{
+        edit:false
+      },
+      treeData:treeData,
       queryParam: {},
-      // 表头
       columns: [
+        {title: '#',dataIndex: 'id'},
+        {title: '部门名称',dataIndex: 'name'},
+        {title: '全称',dataIndex: 'all'},
+        {title: '备注',dataIndex: 'note'},
+        {title: '排序',dataIndex: 'sort',sorter: true},
         {
-          title: '#',
-          dataIndex: 'no'
-        },
-        {
-          title: '成员名称',
-          dataIndex: 'description'
-        },
-        {
-          title: '登录次数',
-          dataIndex: 'callNo',
-          sorter: true,
-          needTotal: true,
-          customRender: (text) => text + ' 次'
-        },
-        {
-          title: '状态',
-          dataIndex: 'status',
-          needTotal: true
-        },
-        {
-          title: '更新时间',
-          dataIndex: 'updatedAt',
-          sorter: true
-        },
-        {
-          table: '操作',
+          title: '操作',
           dataIndex: 'action',
           width: '150px',
           scopedSlots: { customRender: 'action' }

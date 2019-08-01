@@ -17,26 +17,124 @@ export const asyncRouterMap = [
         name: 'dashboard',
         redirect: '/dashboard/workplace',
         component: RouteView,
-        meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        meta: { title: '控制台', icon: bxAnaalyse, permission: [ 'dashboard' ] },
         children: [
+          {
+            path: '/dashboard/workplace',
+            name: 'dashboardDes',
+            component: () => import('@/views/dashboard/Workplace'),
+            meta: { title: '项目介绍', keepAlive: false, permission: [ 'dashboard' ] }
+          },
           {
             path: '/dashboard/analysis',
             name: 'Analysis',
             component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: '分析页', keepAlive: false, permission: [ 'dashboard' ] }
-          },
-          // 外部链接
-          {
-            path: 'https://www.baidu.com/',
-            name: 'Monitor',
-            meta: { title: '监控页（外部）', target: '_blank' }
+            meta: { title: '统计报表', keepAlive: false, permission: [ 'dashboard' ] }
           },
           {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
+            path: 'https://www.github.com/Licoy/sas',
+            name: 'projectSite',
+            meta: { title: '项目主页', target: '_blank' }
+          },
+        ]
+      },
+
+      // system
+      {
+        path: '/system',
+        redirect: '/system/user',
+        component: PageView,
+        meta: { title: '系统管理', icon: 'setting', permission: [ 'system' ] },
+        children: [
+          {
+            path: '/system/user',
+            name: 'systemUserIndex',
+            component: () => import('@/views/system/user/Index'),
+            meta: { title: '用户管理', keepAlive: false, permission: [ 'system' ] }
+          },
+          {
+            path: '/system/role',
+            name: 'systemRoleManage',
+            component: () => import('@/views/system/role/Index'),
+            meta: { title: '角色管理', keepAlive: false, permission: [ 'system' ] }
+          },
+          // {
+          //   path: '/dashboard/analysis',
+          //   name: 'systemUserManage',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: '菜单管理', keepAlive: false, permission: [ 'system' ] }
+          // },
+          {
+            path: '/system/dept',
+            name: 'systemDeptManage',
+            component: () => import('@/views/system/dept/Index'),
+            meta: { title: '部门管理', keepAlive: false, permission: [ 'system' ] }
+          },
+          {
+            path: '/system/position',
+            name: 'systemPositionManage',
+            component: () => import('@/views/system/position/Index'),
+            meta: { title: '职位管理', keepAlive: false, permission: [ 'system' ] }
+          },
+          // {
+          //   path: '/dashboard/analysis',
+          //   name: 'systemUserManage',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: '字典管理', keepAlive: false, permission: [ 'system' ] }
+          // },
+          // {
+          //   path: '/dashboard/analysis',
+          //   name: 'systemUserManage',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: '参数设置', keepAlive: false, permission: [ 'system' ] }
+          // },
+          // {
+          //   path: '/dashboard/analysis',
+          //   name: 'systemUserManage',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: '登录日志', keepAlive: false, permission: [ 'system' ] }
+          // },
+          // {
+          //   path: '/dashboard/analysis',
+          //   name: 'systemUserManage',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: '异常日志', keepAlive: false, permission: [ 'system' ] }
+          // },
+          // {
+          //   path: '/dashboard/analysis',
+          //   name: 'systemUserManage',
+          //   component: () => import('@/views/dashboard/Analysis'),
+          //   meta: { title: '通知公告', keepAlive: false, permission: [ 'system' ] }
+          // },
+        ]
+      },
+
+      // monitor
+      {
+        path: '/monitor',
+        name: 'monitor',
+        redirect: '/monitor/service',
+        component: RouteView,
+        meta: { title: '任务监控', icon: bxAnaalyse, permission: [ 'dashboard' ] },
+        children: [
+          {
+            path: '/monitor/service',
+            name: 'monitorService',
             component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: '工作台', keepAlive: true, permission: [ 'dashboard' ] }
-          }
+            meta: { title: '服务监控', keepAlive: false, permission: [ 'dashboard' ] }
+          },
+          {
+            path: '/monitor/user-online',
+            name: 'monitorUserOnline',
+            component: () => import('@/views/dashboard/Workplace'),
+            meta: { title: '在线用户', keepAlive: false, permission: [ 'dashboard' ] }
+          },
+          {
+            path: '/monitor/crontab',
+            name: 'monitorCrontab',
+            component: () => import('@/views/dashboard/Workplace'),
+            meta: { title: '计划任务', keepAlive: false, permission: [ 'dashboard' ] }
+          },
         ]
       },
 

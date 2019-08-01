@@ -17,6 +17,10 @@ export default {
     search: {
       type: Boolean,
       default: false
+    },
+    add: {
+      type: Boolean,
+      default: false
     }
   },
   created () {
@@ -38,7 +42,7 @@ export default {
     renderSearch () {
       return (
         <Search
-          placeholder="input search text"
+          placeholder="输入昵称、用户名搜索"
           style="width: 100%; margin-bottom: 1rem"
         />
       )
@@ -51,7 +55,7 @@ export default {
         <Item key={item.key}>
           { this.renderIcon(item.icon) }
           { item.title }
-          <a class="btn" style="width: 20px;z-index:1300" {...{ on: { click: () => this.handlePlus(item) } }}><a-icon type="plus"/></a>
+          {this.add ? <a class="btn" style="width: 20px;z-index:1300" {...{ on: { click: () => this.handlePlus(item) } }}><a-icon type="plus"/></a> : null}
         </Item>
       )
     },
@@ -67,14 +71,13 @@ export default {
         <ItemGroup key={item.key}>
           <template slot="title">
             <span>{ item.title }</span>
-            <a-dropdown>
+              {this.add ? <a-dropdown>
               <a class="btn"><a-icon type="ellipsis" /></a>
               <a-menu slot="overlay">
                 <a-menu-item key="1">新增</a-menu-item>
                 <a-menu-item key="2">合并</a-menu-item>
                 <a-menu-item key="3">移除</a-menu-item>
-              </a-menu>
-            </a-dropdown>
+              </a-menu></a-dropdown> : null}
           </template>
           { childrenItems }
         </ItemGroup>

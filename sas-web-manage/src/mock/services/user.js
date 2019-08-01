@@ -5,7 +5,7 @@ const info = (options) => {
   console.log('options', options)
   const userInfo = {
     'id': '4291d7da9005377ec9aec4a71ea837f',
-    'name': '天野远子',
+    'name': '憧憬Licoy',
     'username': 'admin',
     'password': '',
     'avatar': '/avatar2.jpg',
@@ -30,6 +30,34 @@ const info = (options) => {
     'createTime': 1497160610259,
     'deleted': 0,
     'permissions': [{
+      'roleId': 'admin',
+      'permissionId': 'system',
+      'permissionName': '系统管理',
+      'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+      'actionEntitySet': [{
+        'action': 'add',
+        'describe': '新增',
+        'defaultCheck': false
+      }, {
+        'action': 'query',
+        'describe': '查询',
+        'defaultCheck': false
+      }, {
+        'action': 'get',
+        'describe': '详情',
+        'defaultCheck': false
+      }, {
+        'action': 'update',
+        'describe': '修改',
+        'defaultCheck': false
+      }, {
+        'action': 'delete',
+        'describe': '删除',
+        'defaultCheck': false
+      }],
+      'actionList': null,
+      'dataAccess': null
+    },{
       'roleId': 'admin',
       'permissionId': 'dashboard',
       'permissionName': '仪表盘',

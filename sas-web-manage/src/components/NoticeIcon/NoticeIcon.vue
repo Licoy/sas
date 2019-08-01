@@ -10,38 +10,29 @@
     :overlayStyle="{ width: '300px', top: '50px' }"
   >
     <template slot="content">
-      <a-spin :spinning="loadding">
+      <a-spin :spinning="loading">
         <a-tabs>
           <a-tab-pane tab="通知" key="1">
-            <a-list>
+            <a-list v-if="!loading">
               <a-list-item>
-                <a-list-item-meta title="你收到了 14 份新周报" description="一年前">
+                <a-list-item-meta title="欢迎使用SAS进行内容开发" description="刚刚">
                   <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
                 </a-list-item-meta>
               </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="你推荐的 曲妮妮 已通过第三轮面试" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="这种模板可以区分多种通知类型" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"/>
-                </a-list-item-meta>
-              </a-list-item>
             </a-list>
+            <span v-else>暂无</span>
           </a-tab-pane>
           <a-tab-pane tab="消息" key="2">
-            123
+            暂无
           </a-tab-pane>
           <a-tab-pane tab="待办" key="3">
-            123
+            暂无
           </a-tab-pane>
         </a-tabs>
       </a-spin>
     </template>
     <span @click="fetchNotice" class="header-notice" ref="noticeRef">
-      <a-badge count="12">
+      <a-badge count="1">
         <a-icon style="font-size: 16px; padding: 4px" type="bell" />
       </a-badge>
     </span>
@@ -53,19 +44,19 @@ export default {
   name: 'HeaderNotice',
   data () {
     return {
-      loadding: false,
+      loading: false,
       visible: false
     }
   },
   methods: {
     fetchNotice () {
       if (!this.visible) {
-        this.loadding = true
+        this.loading = true
         setTimeout(() => {
-          this.loadding = false
-        }, 2000)
+          this.loading = false
+        }, 800)
       } else {
-        this.loadding = false
+        this.loading = false
       }
       this.visible = !this.visible
     }

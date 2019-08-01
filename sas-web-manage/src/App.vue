@@ -23,7 +23,15 @@ export default {
 }
 </script>
 <style>
+ @import url('//at.alicdn.com/t/font_1328028_8w8m647cq5x.css');
+ .iconfont{
+   font-size: 12px;
+ }
   #app {
     height: 100%;
   }
 </style>
+<style lang="less">
+@import url('./assets/style/common.less');
+</style>
+

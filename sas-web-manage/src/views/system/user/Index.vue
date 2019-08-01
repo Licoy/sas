@@ -1,12 +1,30 @@
 <template>
   <a-card :bordered="false">
     <a-row :gutter="8">
+      <a-col :span='12'>
+        <a-button class="mr5" type='primary'><a-icon type="reload" /> 刷新数据</a-button>
+        <a-button class="mr5" @click="show.edit=true"><a-icon type="plus" /> 添加用户</a-button>
+        <a-button class="mr5" :disabled='selectedRows.length==0'><a-icon type="pause-circle" /> 封禁</a-button>
+        <a-button class="mr5" :disabled='selectedRows.length==0'><a-icon type="check-circle" /> 解禁</a-button>
+        <a-button class="mr5" :disabled='selectedRows.length==0'><a-icon type="delete" /> 删除</a-button>
+      </a-col>
+      <a-col class="tr" :span='12'>
+        <a-input-group compact>
+          <a-select defaultValue="name">
+            <a-select-option value="name">姓名</a-select-option>
+            <a-select-option value="username">用户名</a-select-option>
+            <a-select-option value="phone">手机号码</a-select-option>
+          </a-select>
+          <a-input style="width: 300px" placeholder="输入搜索关键字"/>
+        </a-input-group>
+      </a-col>
+    </a-row>
+    <a-divider/>
+    <a-row :gutter="8">
       <a-col :span="5">
         <s-tree
           :dataSource="orgTree"
           :openKeys.sync="openKeys"
-          :search="true"
-          :add="true"
           @click="handleClick"
           @add="handleAdd"
           @titleClick="handleTitleClick"></s-tree>
@@ -45,26 +63,29 @@
         </s-table>
       </a-col>
     </a-row>
-
-    <org-modal ref="modal" @ok="handleSaveOk" @close="handleSaveClose" />
+    <user-edit v-if="show.edit" @cancel="(reload)=>{show.edit=false;}"/>
   </a-card>
 </template>
 
 <script>
 import STree from '@/components/Tree/Tree'
 import { STable } from '@/components'
-import OrgModal from './modules/OrgModal'
 import { getOrgTree, getServiceList } from '@/api/manage'
-
+import UserEdit from './Edit';
+import commonMixins from '@/mixins/common'
 export default {
   name: 'TreeList',
+  mixins:[commonMixins],
   components: {
     STable,
     STree,
-    OrgModal
+    UserEdit
   },
   data () {
     return {
+      show:{
+        edit:false
+      },
       openKeys: ['key-01'],
 
       // 查询参数
@@ -76,28 +97,34 @@ export default {
           dataIndex: 'no'
         },
         {
-          title: '成员名称',
+          title: '用户名',
           dataIndex: 'description'
         },
+        // {
+        //   title: '姓名',
+        //   dataIndex: 'description'
+        // },
+        // {
+        //   title: '部门',
+        //   dataIndex: 'description'
+        // },
+        // {
+        //   title: '职位',
+        //   dataIndex: 'description'
+        // },
+        // {
+        //   title: '电话',
+        //   dataIndex: 'description'
+        // },
         {
-          title: '登录次数',
+          title: '状态',
           dataIndex: 'callNo',
           sorter: true,
           needTotal: true,
           customRender: (text) => text + ' 次'
         },
         {
-          title: '状态',
-          dataIndex: 'status',
-          needTotal: true
-        },
-        {
-          title: '更新时间',
-          dataIndex: 'updatedAt',
-          sorter: true
-        },
-        {
-          table: '操作',
+          title: '操作',
           dataIndex: 'action',
           width: '150px',
           scopedSlots: { customRender: 'action' }
