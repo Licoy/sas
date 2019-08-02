@@ -76,16 +76,16 @@ export const asyncRouterMap = [
             component: () => import('@/views/system/position/Index'),
             meta: { title: '职位管理', keepAlive: false, permission: [ 'system' ] }
           },
+          {
+            path: '/system/dict',
+            name: 'systemDictManage',
+            component: () => import('@/views/system/dict/Index'),
+            meta: { title: '字典管理', keepAlive: false, permission: [ 'system' ] }
+          },
           // {
-          //   path: '/dashboard/analysis',
-          //   name: 'systemUserManage',
-          //   component: () => import('@/views/dashboard/Analysis'),
-          //   meta: { title: '字典管理', keepAlive: false, permission: [ 'system' ] }
-          // },
-          // {
-          //   path: '/dashboard/analysis',
-          //   name: 'systemUserManage',
-          //   component: () => import('@/views/dashboard/Analysis'),
+          //   path: '/system/param',
+          //   name: 'systemParamManage',
+          //   component: () => import('@/views/system/param/Index'),
           //   meta: { title: '参数设置', keepAlive: false, permission: [ 'system' ] }
           // },
           // {
